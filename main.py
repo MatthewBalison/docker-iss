@@ -70,9 +70,15 @@ def write_to_mongo(dtime, long, lat):
         collection.insert_one({'timestamp': dtime, 'longitude': long, 'latitude': lat})
         logger.info('Output written to MongoDB')
     except Exception as e:
+        raise
         logger.error(e)
-        exit(1)
+        #exit(1) # Just commented this out and moved to entrypoint
 
 # entrypoint fcn
 if __name__ == "__main__":
-    get_iss_location()
+    try:
+        get_iss_location()
+    except:
+        Exception as e:
+            logger.error(e)
+            exit(1) # All I changed is moving the exit from inside the main function to inside the entrypoint.
